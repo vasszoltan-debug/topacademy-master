@@ -1,0 +1,74 @@
+﻿@import "../../../styles/colors.scss";
+@import "../../../styles/font-mixins.scss";
+
+
+.cols {
+  display: grid;
+  grid-row-gap: 25px;
+  margin-bottom: 30px;
+  margin-left: 18px;
+  margin-right: 17px;
+  .colone{
+    width: 100%;
+  }
+}
+
+
+
+@media only screen and (min-width: 500px) {
+  .cols {
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+}
+
+
+
+@media only screen and (min-width: 800px) {
+  .cols {
+    margin-bottom: 50px;
+    grid-row-gap: 25px;
+  }
+}
+
+
+
+@media only screen and (min-width: 850px) {
+  .cols {
+    display: grid;
+    column-gap: 40px;
+    grid-row-gap: 60px;
+    width: 780px;
+    margin-bottom: 60px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media only screen and (min-width: 1250px) {
+  .cols {
+    display: grid;
+    column-gap: 100px;
+    grid-row-gap: 80px;
+    width: 1030px;
+    margin-bottom: 60px;
+  }
+}
+
+
+
+@media only screen and (min-width: 1400px) {
+  .cols {
+    display: grid;
+    column-gap: 80px;
+    width: 1180px;
+  }
+}
+
+@media only screen and (min-width: 1600px) {
+  .cols {
+    display: grid;
+    column-gap: 120px;
+    width: 1300px;
+  }
+}

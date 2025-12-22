@@ -1,0 +1,20 @@
+﻿@import "../../../styles/colors.scss";
+@import "../../../styles/font-mixins.scss";
+
+
+.item {
+  margin: 40px 0;
+  background-color: $color-blue-classroomexample;
+  .header {
+    margin-bottom: 10px;
+  }
+  
+  .link{
+    cursor:pointer;
+  }
+  
+  .title {
+    @include very-small-title-font($color-red-normal);
+  }
+
+}

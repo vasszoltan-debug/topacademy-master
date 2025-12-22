@@ -1,0 +1,9 @@
+/* autoprefixer grid: autoplace */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+p img{
+    max-width: 100%;
+}

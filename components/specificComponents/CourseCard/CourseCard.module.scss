@@ -1,0 +1,20 @@
+﻿@import "../../../styles/colors.scss";
+@import "../../../styles/font-mixins.scss";
+
+
+.item {
+  margin: 40px 0;
+  .header {
+    margin-bottom: 10px;
+  }
+  
+  .title {
+    @include very-small-title-font($color-red-normal);
+  }
+  
+  .shortdescription {
+    @include very-small-title-font($color-red-normal);
+  }
+  
+}
+

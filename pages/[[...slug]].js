@@ -1,25 +1,37 @@
-import { useStoryblokState, getStoryblokApi, StoryblokComponent } from "@storyblok/react";
+import {
+  useStoryblokState,
+  getStoryblokApi,
+  StoryblokComponent,
+} from "@storyblok/react";
+
 import HeadComponent from "../components/technicalComponents/HeadComponent/HeadComponent";
 import { getTags } from "../functions/services/metaTagService";
 
+const RESOLVE_RELATIONS = [
+  "hero.colorcode",
+  "leftrightblock.colorcode",
+  "course.colorcode",
+  "artist.colorcode",
+  "song.colorcode",
+  "person.colorcode",
+  "product.colorcode",
+  "location.colorcode",
+  "artist.songs",
+  "song.artist",
+  "course.teachers",
+  "course.products",
+  "list.elements",
+];
+
 export default function Page({ story, preview, socialtags, menu }) {
-  story = useStoryblokState(story, { //Hook that connects the current page to the Storyblok Real Time visual editor. Needs information about the relations in order for the relations to be editable as well.
-    resolveRelations: [
-      "hero.colorcode",
-      "leftrightblock.colorcode",
-      "course.colorcode",
-      "artist.colorcode",
-      "song.colorcode",
-      "person.colorcode",
-      "product.colorcode",
-      "location.colorcode",
-      "artist.songs",
-      "song.artist",
-      "course.teachers",
-      "course.products",
-      "list.elements"
-    ]
-  }, preview);
+  // Connect page to Storyblok Visual Editor (bridge)
+  story = useStoryblokState(
+    story,
+    { resolveRelations: RESOLVE_RELATIONS },
+    preview
+  );
+
+  if (!story?.content) return null;
 
   return (
     <>
@@ -29,64 +41,64 @@ export default function Page({ story, preview, socialtags, menu }) {
   );
 }
 
-
-export async function getStaticProps({ params }) {
-  let slug = params.slug ? params.slug.join("/") : "home";
-
-  let sbParams = {
-    version: "draft", // 'draft' or 'published'
-    resolve_relations: [
-      "hero.colorcode",
-      "leftrightblock.colorcode",
-      "course.colorcode",
-      "artist.colorcode",
-      "song.colorcode",
-      "person.colorcode",
-      "product.colorcode",
-      "location.colorcode",
-      "artist.songs",
-      "song.artist",
-      "course.teachers",
-      "course.products",
-      "list.elements"
-    ]
-  };
+export async function getStaticProps({ params, preview = false }) {
+  const slug = params?.slug ? params.slug.join("/") : "home";
 
   const storyblokApi = getStoryblokApi();
 
-  let { data } = await storyblokApi.get(`cdn/stories/${slug}`, sbParams);
-  if (!data) {
-    return {
-      notFound: true,
-    }
+  const sbParams = {
+    version: preview ? "draft" : "preview",
+    token: process.env.STORYBLOK_API_KEY,
+    resolve_relations: RESOLVE_RELATIONS,
+  };
+
+  // 1) Get current page story
+  let storyRes;
+  try {
+    storyRes = await storyblokApi.get(`cdn/stories/${slug}`, sbParams);
+  } catch (e) {
+    return { notFound: true };
   }
 
-  //getting menu data needed throughout the site
-  let menudata = await storyblokApi.get(`cdn/stories/reusable/headermenu`, sbParams);
-  if (!menudata) {
-    return {
-      notFound: true,
-    }
-  }
-  const menu = menudata.data.story;
+  const story = storyRes?.data?.story;
+  if (!story) return { notFound: true };
 
-  const title = data.story.name;
-  const description = data.story.content.tagline ? data.story.content.tagline : `${title}`;
+  // 2) Get menu story
+  let menuRes;
+  try {
+    menuRes = await storyblokApi.get(
+      "cdn/stories/reusable/headermenu",
+      sbParams
+    );
+  } catch (e) {
+    menuRes = null;
+  }
+  const menu = menuRes?.data?.story || null;
+
+  // 3) Social tags
+  const title = story.name || "Page";
+  const description = story.content?.tagline ? story.content.tagline : title;
+
+  const baseUrl = process.env.NEXT_PUBLIC_DEPLOY_URL
+    ? process.env.NEXT_PUBLIC_DEPLOY_URL.replace(/\/$/, "")
+    : "";
+
   const socialtags = getTags({
-    storyblokSocialTag: data.story.content.socialtag,
+    storyblokSocialTag: story.content?.socialtag,
     pageDefaults: {
       "og:title": title,
       "og:description": description,
-      "og:url": `${process.env.NEXT_PUBLIC_DEPLOY_URL}` + slug
-    }
+      "og:url": baseUrl ? `${baseUrl}/${slug}` : `/${slug}`,
+    },
   });
 
   return {
     props: {
-      story: data ? data.story : false,
-      key: data ? data.story.id : false,
+      story,
+      key: story.id,
+      preview,
       socialtags,
-      menu
+      menu,
     },
     revalidate: 10,
   };
@@ -95,22 +107,26 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   const storyblokApi = getStoryblokApi();
 
-  let { data } = await storyblokApi.get("cdn/links/");
+  // IMPORTANT: cdn/links needs token too
+  const { data } = await storyblokApi.get("cdn/links/", {
+    version: "published",
+    token: process.env.STORYBLOK_API_KEY,
+  });
 
-  let paths = [];
-  Object.keys(data.links).forEach((linkKey) => {
-    if (data.links[linkKey].is_folder) {
-      return;
-    }
+  const paths = [];
+  Object.keys(data?.links || {}).forEach((linkKey) => {
+    const link = data.links[linkKey];
+    if (!link || link.is_folder) return;
 
-    const slug = data.links[linkKey].slug;
-    let splittedSlug = slug.split("/");
+    // Skip Storyblok's default startpage if you don't want it as a route
+    const slug = link.slug;
+    if (!slug) return;
 
-    paths.push({ params: { slug: splittedSlug } });
+    paths.push({ params: { slug: slug.split("/") } });
   });
 
   return {
-    paths: paths,
-    fallback: 'blocking'
+    paths,
+    fallback: "blocking",
   };
 }

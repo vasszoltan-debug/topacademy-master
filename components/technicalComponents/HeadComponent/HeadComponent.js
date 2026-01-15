@@ -43,7 +43,7 @@ export default class HeadComponent extends Component {
 				loaded: document.readyState === "complete"
 			});
 		});
-		hotjar.initialize(3228407, 6);
+		hotjar.initialize(541820, 6);
 	}
 
 	render() {
@@ -73,6 +73,7 @@ export default class HeadComponent extends Component {
 					s0.parentNode.insertBefore(s1,s0);})();`,
 			}}>
 			</Script>
+			<Script id="contentsquare-script" src="https://t.contentsquare.net/uxa/441b57692fa09.js" strategy="afterInteractive" />
 			<Script id="gascriptloader" src={gasource}></Script>
 			<Script id="gascriptwrapper" dangerouslySetInnerHTML={{
 				__html: `

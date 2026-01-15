@@ -6,6 +6,8 @@ import { storyblokEditable, StoryblokComponent } from "@storyblok/react";
 import { RichTextToHTML } from "../../../functions/storyBlokRichTextRenderer";
 import List from "../../genericComponents/List/List";
 
+
+
 export default class Location extends Component {
 
 	constructor(props) {
@@ -33,6 +35,5 @@ export default class Location extends Component {
 				</main>
 			</div>
 		);
-
-	}
+	 }
 }

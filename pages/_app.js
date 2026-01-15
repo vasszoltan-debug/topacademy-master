@@ -49,7 +49,8 @@ const components = {
   product: Product,
   location: Location,
   artist: Artist,
-  song: Song
+  song: Song,
+  location: Location
 };
 
 storyblokInit({

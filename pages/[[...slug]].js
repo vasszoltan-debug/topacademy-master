@@ -14,11 +14,13 @@ const RESOLVE_RELATIONS = [
   "artist.colorcode",
   "song.colorcode",
   "person.colorcode",
+  "location.colorcode",
   "product.colorcode",
   "location.colorcode",
   "artist.songs",
   "song.artist",
   "course.teachers",
+  "course.locations",
   "course.products",
   "list.elements",
 ];
@@ -37,6 +39,8 @@ export default function Page({ story, preview, socialtags, menu }) {
     <>
       <HeadComponent socialTags={socialtags} />
       <StoryblokComponent menu={menu} blok={story.content} />
+
+
     </>
   );
 }

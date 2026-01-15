@@ -31,20 +31,22 @@
 
 .rich-text {
 
-  &__highlighted-text {
-    font-weight: 800;
-    color:$color-blue-normal;
-  }
+ &_highlighted-text {
+  font-weight: 800;
+  color: $color-red-normal;
+}
+
+
   
   &__link {
     word-wrap: break-word;
-    color: $color-blue-normal;
+    color: $color-red-normal;
     
     > i {
       padding: 5px 15px 4px;
       border-radius: 50px;
       font-style: normal;
-      background-color: $color-blue-ultra-light;
+      background-color: $color-yellow-very-light;
     }
     
     > i:before {
@@ -66,7 +68,7 @@
       padding: 5px 15px 4px;
       border-radius: 50px;
       font-style: normal;
-      background-color: $color-blue-ultra-light;
+      background-color: $color-yellow-normal;
       
       &:before {
         display: inline-block;
@@ -117,7 +119,7 @@
         flex-shrink: 0;
         width: 22px;
         margin-left: 12px;
-        @include text-font($color-blue-normal);
+        @include text-font($color-red-normal);
         font-weight: 700;
       }
     }

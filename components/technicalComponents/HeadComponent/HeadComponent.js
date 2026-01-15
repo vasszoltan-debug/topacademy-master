@@ -43,7 +43,6 @@ export default class HeadComponent extends Component {
 				loaded: document.readyState === "complete"
 			});
 		});
-		
 	}
 
 	render() {

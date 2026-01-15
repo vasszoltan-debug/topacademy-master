@@ -1,0 +1,79 @@
+/* styles/Delivery.module.scss */
+
+// Változók (könnyű átírni, ha változik a brand szín)
+$primary-color: #d9381e;
+$hover-color: #bf2d16;
+$bg-color: #fff5f5;
+$text-color: #555;
+$white: #ffffff;
+
+.container {
+  width: 100%;
+  padding: 60px 20px;
+  background-color: $bg-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: $white;
+  max-width: 600px;
+  width: 100%;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  // Finom árnyék a kiemeléshez
+  box-shadow: 0 10px 30px rgba(217, 56, 30, 0.15);
+  border: 2px solid darken($bg-color, 5%);
+  
+  // Reszponzív nézet (mobilra)
+  @media (max-width: 600px) {
+    padding: 25px;
+  }
+}
+
+.title {
+  font-size: 2.5rem;
+  color: $primary-color;
+  margin-bottom: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: inherit;
+
+  @media (max-width: 600px) {
+    font-size: 1.8rem;
+  }
+}
+
+.text {
+  font-size: 1.1rem;
+  color: $text-color;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.button {
+  display: inline-block;
+  background-color: $primary-color;
+  color: $white;
+  padding: 15px 35px;
+  border-radius: 50px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(217, 56, 30, 0.3);
+  cursor: pointer;
+
+  &:hover {
+    background-color: $hover-color;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(217, 56, 30, 0.5);
+  }
+
+  .arrow {
+    margin-left: 8px;
+  }
+}
